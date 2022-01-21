@@ -24,20 +24,20 @@ export default function App() {
     setStatus('pending');
 
     imagesApi
-      .fetchImages(searchQuery, page)
-      .then(images => {
-        if (!images.hits.length) {
-          setStatus('idle');
-          setImages(null);
-          return toast.error(`No matches found`)
-        }
-        setImages(images.hits);
-        setStatus('resolved');
-      })
-      .catch(error => {
-        setError(error);
-        setStatus('rejected');
-      })
+    .fetchImages(searchQuery, 1)
+    .then(images => {
+      if (!images.hits.length) {
+        setStatus('idle');
+        setImages(null);
+        return toast.error(`No matches found`)
+      }
+      setImages(images.hits);
+      setStatus('resolved');
+    })
+    .catch(error => {
+      setError(error);
+      setStatus('rejected');
+    });
   }, [searchQuery]);
 
   const handleImageClick = link => {
