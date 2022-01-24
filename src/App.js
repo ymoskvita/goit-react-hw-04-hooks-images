@@ -15,12 +15,14 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('idle');
+  const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
     if (!searchQuery) {
       return;
     }
     setPage(1);
+    setLastPage(false);
     setStatus('pending');
 
     imagesApi
@@ -31,6 +33,7 @@ export default function App() {
         setImages(null);
         return toast.error(`No matches found`)
       }
+      images.hits.length < 11 && setLastPage(true);
       setImages(images.hits);
       setStatus('resolved');
     })
@@ -52,6 +55,7 @@ export default function App() {
       .fetchImages(searchQuery, page + 1)
       .then(images => {
         setImages(prevState => [...prevState, ...images.hits],);
+        images.hits.length < 11 && setLastPage(true);
       })
     }
 
@@ -73,7 +77,7 @@ export default function App() {
             images={images}
             onImageClick={handleImageClick} />
         }
-        {images && images.length > 11 && <Button onClick={handleLoadMoreBnt}/>}
+        {images && !lastPage && <Button onClick={handleLoadMoreBnt}/>}
         {showModal &&
           <Modal onClose={handleImageClick}>
             <img src={selectedImage} alt="" onClick={handleImageClick}/>
