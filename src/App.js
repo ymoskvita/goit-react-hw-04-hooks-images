@@ -77,7 +77,7 @@ export default function App() {
             images={images}
             onImageClick={handleImageClick} />
         }
-        {images && !lastPage && <Button onClick={handleLoadMoreBnt}/>}
+        {images && !lastPage && status !== 'pending' && <Button onClick={handleLoadMoreBnt}/>}
         {showModal &&
           <Modal onClose={handleImageClick}>
             <img src={selectedImage} alt="" onClick={handleImageClick}/>
